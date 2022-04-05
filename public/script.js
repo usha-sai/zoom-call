@@ -12,7 +12,13 @@ navigator.mediaDevices.getUserMedia({
   audio: true
 }).then(stream => {
   addVideoStream(myVideo, stream)
+app.use('/api/user', require('./routes/user'));
 
+// For any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
   myPeer.on('call', call => {
     call.answer(stream)
     const video = document.createElement('video')
